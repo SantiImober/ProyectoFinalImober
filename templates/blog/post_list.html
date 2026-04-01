@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Posts{% endblock %}
+
+{% block content %}
+<h2>Posts</h2>
+{% if posts %}
+    <div class="row">
+    {% for post in posts %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                {% if post.imagen %}
+                    <img src="{{ post.imagen.url }}" class="card-img-top" style="height:200px;object-fit:cover;">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ post.titulo }}</h5>
+                    <p class="card-text">{{ post.resumen }}</p>
+                    <a href="{% url 'post_detail' post.pk %}" class="btn btn-dark">Leer más</a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+{% else %}
+    <p>No hay páginas aún.</p>
+{% endif %}
+{% endblock %}
