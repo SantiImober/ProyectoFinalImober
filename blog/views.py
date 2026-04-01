@@ -1,7 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import Post
 
@@ -43,3 +44,14 @@ class PostDeleteView(LoginRequiredMixin, DeleteView):
     model = Post
     template_name = 'blog/post_confirm_delete.html'
     success_url = reverse_lazy('post_list')
+
+@login_required
+def like_post(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    if request.user in post.likes.all():
+        post.likes.remove(request.user)
+        liked = False
+    else:
+        post.likes.add(request.user)
+        liked = True
+    return JsonResponse({'liked': liked, 'total_likes': post.total_likes()})

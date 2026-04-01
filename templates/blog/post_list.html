@@ -20,6 +20,7 @@
                 <div class="card-body">
                     <h5 class="card-title">{{ post.titulo }}</h5>
                     <p class="card-text">{{ post.resumen }}</p>
+                    <p class="text-muted">❤️ {{ post.total_likes }} likes</p>
                     <a href="{% url 'post_detail' post.pk %}" class="btn btn-dark">Leer más</a>
                 </div>
             </div>
