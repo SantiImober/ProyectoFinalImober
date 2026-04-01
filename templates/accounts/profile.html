@@ -1,1 +1,27 @@
+{% extends 'base.html' %}
 
+{% block title %}Perfil{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4 text-center">
+        {% if profile.avatar %}
+            <img src="{{ profile.avatar.url }}" class="rounded-circle mb-3" width="150" height="150" style="object-fit:cover;">
+        {% else %}
+            <div class="bg-secondary rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width:150px;height:150px;">
+                <span class="text-white fs-1">{{ request.user.username|first|upper }}</span>
+            </div>
+        {% endif %}
+        <h4>{{ request.user.username }}</h4>
+        <p>{{ request.user.email }}</p>
+    </div>
+    <div class="col-md-8">
+        <h2>Mi Perfil</h2>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-dark">Guardar cambios</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
