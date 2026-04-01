@@ -1,1 +1,52 @@
+{% extends 'base.html' %}
 
+{% block title %}Mensajes{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Mensajes</h2>
+    <a href="{% url 'send_message' %}" class="btn btn-dark">+ Nuevo mensaje</a>
+</div>
+
+<ul class="nav nav-tabs mb-4">
+    <li class="nav-item">
+        <a class="nav-link active" data-bs-toggle="tab" href="#recibidos">Recibidos ({{ messages_received.count }})</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="tab" href="#enviados">Enviados ({{ messages_sent.count }})</a>
+    </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade show active" id="recibidos">
+        {% if messages_received %}
+            {% for msg in messages_received %}
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h6 class="text-muted">De: <strong>{{ msg.sender.username }}</strong> — {{ msg.timestamp|date:"d/m/Y H:i" }}</h6>
+                        <p>{{ msg.content }}</p>
+                        <a href="{% url 'send_message' %}?receiver={{ msg.sender.id }}" class="btn btn-sm btn-outline-dark">Responder</a>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No tenés mensajes recibidos.</p>
+        {% endif %}
+    </div>
+
+    <div class="tab-pane fade" id="enviados">
+        {% if messages_sent %}
+            {% for msg in messages_sent %}
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h6 class="text-muted">Para: <strong>{{ msg.receiver.username }}</strong> — {{ msg.timestamp|date:"d/m/Y H:i" }}</h6>
+                        <p>{{ msg.content }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No tenés mensajes enviados.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
