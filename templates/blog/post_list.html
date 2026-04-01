@@ -21,6 +21,16 @@
                     <h5 class="card-title">{{ post.titulo }}</h5>
                     <p class="card-text">{{ post.resumen }}</p>
                     <p class="text-muted">❤️ {{ post.total_likes }} likes</p>
+                    <div class="d-flex align-items-center mb-3">
+                        {% if post.autor.profile.avatar %}
+                            <img src="{{ post.autor.profile.avatar.url }}" class="rounded-circle me-2" width="30" height="30" style="object-fit:cover;">
+                        {% else %}
+                            <div class="rounded-circle bg-secondary me-2 d-flex align-items-center justify-content-center" style="width:30px;height:30px;">
+                                <span class="text-white" style="font-size:12px;">{{ post.autor.username|first|upper }}</span>
+                            </div>
+                        {% endif %}
+                        <small class="text-muted">{{ post.autor.username }}</small>
+                    </div>
                     <a href="{% url 'post_detail' post.pk %}" class="btn btn-dark">Leer más</a>
                 </div>
             </div>

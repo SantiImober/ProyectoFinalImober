@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}Notificaciones{% endblock %}
+
+{% block content %}
+<h2>Notificaciones</h2>
+{% if notifs %}
+    {% for notif in notifs %}
+        <div class="card mb-2">
+            <div class="card-body">
+                <p class="mb-0">{{ notif.message }}</p>
+                <small class="text-muted">{{ notif.timestamp|date:"d/m/Y H:i" }}</small>
+            </div>
+        </div>
+    {% endfor %}
+{% else %}
+    <p>No tenés notificaciones.</p>
+{% endif %}
+{% endblock %}
