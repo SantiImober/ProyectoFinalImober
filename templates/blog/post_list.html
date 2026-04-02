@@ -9,6 +9,17 @@
         <a href="{% url 'post_create' %}" class="btn btn-dark">+ Nuevo Post</a>
     {% endif %}
 </div>
+
+<form method="GET" class="mb-4">
+    <div class="input-group">
+        <input type="text" name="q" value="{{ query }}" class="form-control" placeholder="Buscar posts...">
+        <button type="submit" class="btn btn-dark">Buscar</button>
+        {% if query %}
+            <a href="{% url 'post_list' %}" class="btn btn-outline-secondary">Limpiar</a>
+        {% endif %}
+    </div>
+</form>
+
 {% if posts %}
     <div class="row">
     {% for post in posts %}
@@ -38,6 +49,10 @@
     {% endfor %}
     </div>
 {% else %}
-    <p>No hay páginas aún.</p>
+    {% if query %}
+        <p>No se encontraron posts para "{{ query }}".</p>
+    {% else %}
+        <p>No hay páginas aún.</p>
+    {% endif %}
 {% endif %}
 {% endblock %}
