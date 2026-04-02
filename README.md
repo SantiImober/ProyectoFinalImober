@@ -4,14 +4,20 @@
 
 Aplicación web tipo blog desarrollada con Django. Permite a los usuarios crear y gestionar posts, interactuar con otros usuarios mediante likes, comentarios y mensajes privados.
 
+## 🌐 Deploy
+
+**URL de producción:** https://blog-imoberdoff.onrender.com
+
 ## Tecnologías utilizadas
 
 - Python 3.14
 - Django 6.0.3
 - Bootstrap 5.3
-- SQLite
+- PostgreSQL (producción) / SQLite (desarrollo)
 - django-ckeditor
 - Pillow
+- Gunicorn
+- WhiteNoise
 
 ## Funcionalidades
 
@@ -19,10 +25,10 @@ Aplicación web tipo blog desarrollada con Django. Permite a los usuarios crear 
 - Perfil de usuario con avatar y bio
 - CRUD completo de posts (solo el autor puede editar/borrar)
 - Texto enriquecido con CKEditor
-- Sistema de likes
+- Sistema de likes en tiempo real
 - Comentarios en posts
 - Buscador de posts
-- Mensajería privada entre usuarios
+- Mensajería privada entre usuarios con bandeja de entrada y enviados
 - Notificaciones de likes, comentarios y mensajes
 
 ## Instalación
@@ -67,18 +73,22 @@ python manage.py runserver
 
 ## Rutas principales
 
-| Ruta                  | Descripción             |
-| --------------------- | ----------------------- |
-| `/`                   | Home                    |
-| `/about/`             | Acerca de mí            |
-| `/pages/`             | Listado de posts        |
-| `/pages/<id>/`        | Detalle del post        |
-| `/pages/create/`      | Crear post              |
-| `/accounts/register/` | Registro                |
-| `/accounts/login/`    | Login                   |
-| `/accounts/profile/`  | Perfil                  |
-| `/messaging/`         | Bandeja de mensajes     |
-| `/admin/`             | Panel de administración |
+| Ruta                        | Descripción                   |
+| --------------------------- | ----------------------------- |
+| `/`                         | Home                          |
+| `/about/`                   | Acerca de mí                  |
+| `/pages/`                   | Listado de posts con buscador |
+| `/pages/<id>/`              | Detalle del post              |
+| `/pages/create/`            | Crear post (requiere login)   |
+| `/pages/update/<id>/`       | Editar post (solo el autor)   |
+| `/pages/delete/<id>/`       | Borrar post (solo el autor)   |
+| `/accounts/register/`       | Registro                      |
+| `/accounts/login/`          | Login                         |
+| `/accounts/profile/`        | Perfil                        |
+| `/messaging/`               | Bandeja de mensajes           |
+| `/messaging/send/`          | Enviar mensaje                |
+| `/messaging/notifications/` | Notificaciones                |
+| `/admin/`                   | Panel de administración       |
 
 ## Autor
 
