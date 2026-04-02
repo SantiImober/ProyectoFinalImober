@@ -16,3 +16,14 @@ class Post(models.Model):
 
     def total_likes(self):
         return self.likes.count()
+class Comment(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
+    autor = models.ForeignKey(User, on_delete=models.CASCADE)
+    contenido = models.TextField()
+    fecha = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.autor.username} en {self.post.titulo}"
+
+    class Meta:
+        ordering = ['fecha']    

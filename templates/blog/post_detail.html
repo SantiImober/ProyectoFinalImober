@@ -17,11 +17,50 @@
     </button>
 {% endif %}
 
-{% if user.is_authenticated %}
+{% if user == post.autor %}
     <a href="{% url 'post_update' post.pk %}" class="btn btn-secondary">Editar</a>
     <a href="{% url 'post_delete' post.pk %}" class="btn btn-danger">Borrar</a>
 {% endif %}
 <a href="{% url 'post_list' %}" class="btn btn-outline-dark">Volver</a>
+
+<hr>
+<h4>Comentarios ({{ post.comments.count }})</h4>
+
+{% for comment in post.comments.all %}
+    <div class="card mb-2">
+        <div class="card-body">
+            <div class="d-flex align-items-center mb-1">
+                {% if comment.autor.profile.avatar %}
+                    <img src="{{ comment.autor.profile.avatar.url }}" class="rounded-circle me-2" width="25" height="25" style="object-fit:cover;">
+                {% else %}
+                    <div class="rounded-circle bg-secondary me-2 d-flex align-items-center justify-content-center" style="width:25px;height:25px;">
+                        <span class="text-white" style="font-size:10px;">{{ comment.autor.username|first|upper }}</span>
+                    </div>
+                {% endif %}
+                <strong>{{ comment.autor.username }}</strong>
+                <small class="text-muted ms-2">{{ comment.fecha|date:"d/m/Y H:i" }}</small>
+            </div>
+            <p class="mb-0">{{ comment.contenido }}</p>
+        </div>
+    </div>
+{% empty %}
+    <p class="text-muted">No hay comentarios aún. ¡Sé el primero!</p>
+{% endfor %}
+
+{% if user.is_authenticated %}
+    <div class="mt-3">
+        <h5>Dejá un comentario</h5>
+        <form method="POST" action="{% url 'add_comment' post.pk %}">
+            {% csrf_token %}
+            <div class="mb-3">
+                <textarea name="contenido" class="form-control" rows="3" placeholder="Escribí tu comentario..." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-dark">Comentar</button>
+        </form>
+    </div>
+{% else %}
+    <p><a href="{% url 'login' %}">Iniciá sesión</a> para comentar.</p>
+{% endif %}
 
 <script>
 function toggleLike(postId) {

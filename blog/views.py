@@ -7,6 +7,7 @@ from django.http import JsonResponse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import Post
 from messaging.models import Notification
+from .models import Post, Comment
 
 # FBVs simples
 def home(request):
@@ -80,3 +81,17 @@ def like_post(request, pk):
                 message=f"{request.user.username} le dio ❤️ a tu post '{post.titulo}'"
             )
     return JsonResponse({'liked': liked, 'total_likes': post.total_likes()})
+
+@login_required
+def add_comment(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    if request.method == 'POST':
+        contenido = request.POST.get('contenido')
+        if contenido:
+            Comment.objects.create(post=post, autor=request.user, contenido=contenido)
+            if post.autor != request.user:
+                Notification.objects.create(
+                    user=post.autor,
+                    message=f"{request.user.username} comentó tu post '{post.titulo}'"
+                )
+    return redirect('post_detail', pk=pk)
